@@ -1,0 +1,66 @@
+						###########################################
+						#			springBoot 学习笔记                                         #
+						###########################################
+
+1.springBoot对jsp的支持
+要想支持jsp  导入jsp的三个依赖
+        <!-- servlet依赖. -->
+        <dependency>
+              <groupId>javax.servlet</groupId>
+              <artifactId>javax.servlet-api</artifactId>
+        <!-- jstl -->
+        </dependency>
+              <dependency>
+                     <groupId>javax.servlet</groupId>
+                     <artifactId>jstl</artifactId>
+              </dependency>
+        <!-- tomcat的支持.-->
+        <dependency>
+               <groupId>org.apache.tomcat.embed</groupId>
+               <artifactId>tomcat-embed-jasper</artifactId>
+        </dependency> 
+在application.properties配置上下文
+spring.mvc.view.prefix=/WEB-INF/jsp/
+spring.mvc.view.suffix=.jsp
+
+之后就和其他模板引擎都是一样使用了啦
+
+注意look！    注意look！注意look！                                                                    thymeleaf    和      jsp    不可以同时使用
+Springboot中新增了Thymeleaf模板的自动装载，
+但如果同时使用jsp会发生什么事情呢？答案是自动注入的ThymeleafviewResolver也会匹配到寻找Jsp视图的请求，
+ThymeleafviewResolver找不到对应的Thymeleaf视图后接着返回了error错误页面
+
+2.热部属
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<!-- optional=true, 依赖不会传递, 该项目依赖devtools; 
+				之后依赖boot项目的项目如果想要使用devtools, 需要重新引入 -->
+			<optional>true</optional>
+		</dependency>
+	直接导入这个jar包就可以了
+
+3.SpringBoot对错误的处理   是采用的Thymeleaf 模板的方式捕获错误
+	e.printStackTrace();打印的是长长的红色部分的错误信息   可要可不要  感觉有log4j够用
+
+
+4.上下文路径
+# 注意 Spring Boot 2.1.2已经把server.context-path弃掉了
+server.servlet.context-path=/hlbbxh
+#server.context-path=/hlbbxh
+
+多配置文件
+3个配置文件：
+核心配置文件：application.properties
+开发环境用的配置文件：application-dev.properties
+生产环境用的配置文件：application-pro.properties
+这样就可以通过application.properties里的spring.profiles.active 灵活地来切换使用哪个环境了
+
+jar包启动参数的传递
+java -jar target/springboot-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
+
+
+
+
+	
+	

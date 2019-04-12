@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8" />
+    <title>Error</title>
+</head>
+<body>
+	<center>
+	    <h3 style="color: red">抱歉 服务器发生错误</h3>
+	  	  错误原因：<span th:text="${url}"></span> <br/>
+	              错误信息：<span th:text="${exception.message}"></span>
+	</center>
+</body>
+</html>
+
