@@ -45,6 +45,11 @@ text 与 utext ：<br/>
 <br/>
 <br/>
 
+<!-- 只能解析css  不能解析js -->
+<span th:text="${alert}"></span>
+<span th:utext="${alert}"></span>
+<br/>
+<br/>
 <!-- 可以这样写  和直接放在href一样 -->
 URL:<br/>
 <a href="" th:href="@{http://www.imooc.com}">网站地址</a>
@@ -104,7 +109,7 @@ URL:<br/>
 <div th:switch="${user.name}">
   <p th:case="'lee'">lee</p>
   <p th:case="#{roles.manager}">普通管理员</p>
-  <p th:case="#{roles.superadmin}">超级管理员</p>
+  <p th:case="#{roles.superadmin}">超级 管理员</p>
   <p th:case="*">其他用户</p>
 </div>
 <br/>
