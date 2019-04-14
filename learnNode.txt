@@ -1,7 +1,8 @@
 						###########################################
 						#			springBoot 学习笔记                                         #
 						###########################################
-
+						
+##################################################################################
 1.springBoot对jsp的支持
 要想支持jsp  导入jsp的三个依赖
         <!-- servlet依赖. -->
@@ -30,6 +31,9 @@ Springboot中新增了Thymeleaf模板的自动装载，
 但如果同时使用jsp会发生什么事情呢？答案是自动注入的ThymeleafviewResolver也会匹配到寻找Jsp视图的请求，
 ThymeleafviewResolver找不到对应的Thymeleaf视图后接着返回了error错误页面
 
+
+
+##################################################################################
 2.热部属
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -40,10 +44,14 @@ ThymeleafviewResolver找不到对应的Thymeleaf视图后接着返回了error错
 		</dependency>
 	直接导入这个jar包就可以了
 
+
+##################################################################################
 3.SpringBoot对错误的处理   是采用的Thymeleaf 模板的方式捕获错误
 	e.printStackTrace();打印的是长长的红色部分的错误信息   可要可不要  感觉有log4j够用
 
 
+
+##################################################################################
 4.上下文路径
 # 注意 Spring Boot 2.1.2已经把server.context-path弃掉了
 server.servlet.context-path=/hlbbxh
@@ -59,8 +67,13 @@ server.servlet.context-path=/hlbbxh
 jar包启动参数的传递
 java -jar target/springboot-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
 
+##################################################################################
+5.全局异常处理机制
+ExpecttionWithController.java
+@ControllerAdvice //首先是这个注解
+这里是使用的是thymeleaf返回
+ajax请求 的地址加了项目路径需要加入全局路径不然得404了
+js中可以加入   debugger; 关键字 打开f12  代码自动停止
 
 
-
-	
 	
