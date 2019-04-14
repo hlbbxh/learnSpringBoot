@@ -76,4 +76,14 @@ ajax请求 的地址加了项目路径需要加入全局路径不然得404了
 js中可以加入   debugger; 关键字 打开f12  代码自动停止
 
 
-	
+##################################################################################
+6.整合mybatis和分页插件
+导入jar包
+# 为mybatis设置，生产环境可删除
+restart.include.mapper=/mapper-[\\w-\\.]+jar
+restart.include.pagehelper=/pagehelper-[\\w-\\.]+jar
+上面的是热部署部分 生成环境可以删除或者注释
+在application.properties配置数据源和mybatis分页
+generatorConfig.xml放在pom.xml同级文件夹配置分页插件和数据源 包和类
+GeneratorDisplay.java逆向工程的启动类 即可生成对应的文件
+
