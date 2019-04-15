@@ -1,0 +1,134 @@
+/*
+ 有什么不懂的联系东东:3096735611
+  
+ */
+
+body{
+	margin: 0;
+
+	background:url(../images/bg.png)no-repeat center center fixed;
+}
+
+
+
+button {
+  margin: 30px 20px;
+  padding: 15px 20px;
+  border-radius: 10px;
+  border: 2px solid;
+  font: 16px 'Open Sans', sans-serif;
+  text-transform: uppercase;
+  background: none;
+  outline: none;
+  cursor: pointer;
+  -webkit-transition: all .5s;
+  transition: all .5s;
+  font-family:微软雅黑;
+}
+
+.dd-1 {
+  color: #A3F7BF;
+  border-color: #A3F7BF;
+  background: -webkit-linear-gradient(left, #a3f7bf, #a3f7bf) no-repeat;
+  background: linear-gradient(to right, #a3f7bf, #a3f7bf) no-repeat;
+  background-size: 0% 100%;
+}
+.dd-1:hover {
+  background-size: 100% 100%;
+  color: #27323A;
+}
+
+
+.dd-2 {
+  color: #E4F68F;
+  border-color: #E4F68F;
+  background: -webkit-linear-gradient(left, #e4f68f, #e4f68f) no-repeat;
+  background: linear-gradient(to right, #e4f68f, #e4f68f) no-repeat;
+  background-size: 100% 0%;
+}
+.dd-2:hover {
+  background-size: 100% 100%;
+  color: #27323A;
+}
+
+.dd-3 {
+  color: #FFD460;
+  border-color: #FFD460;
+  position: relative;
+  overflow: hidden;
+}
+.dd-3:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -5px;
+  width: 0;
+  height: 100%;
+  background-color: #FFD460;
+  z-index: -1;
+  -webkit-transition: all .5s;
+  transition: all .5s;
+}
+.dd-3:hover {
+  color: #27323A;
+}
+.dd-3:hover:hover:before {
+  width: 110%;
+}
+
+.cs{
+	text-align:center;
+    font-family:微软雅黑;
+	color:rgba(0, 150, 136, 0.59);
+}
+.cs h3{
+color:rgba(206, 0, 255, 0.41);
+}
+.cs h4{
+color:#bc87ff;
+}
+
+.logo {
+	width:100px;
+	height:100px;
+	margin:30px auto 0px;
+	border-radius:200px;
+	border:5px solid #fff;
+	box-shadow:5px 5px 5px rgba(0,0,0,0.2);
+	transition:1s all;
+}
+
+.logo img {
+	width:100px;
+	height:100px;
+	margin:0px auto 0px;
+	background:#fff;
+	border-radius:200px;
+}
+
+.logo:hover {
+	transform:rotate(360deg);
+	box-shadow:0px 0px 0px rgba(0,0,0,0.2);
+}
+#nav {
+	width:300px;
+	height:540px;
+	background:rgba(68, 160, 255, 0.65);
+	position:fixed;
+	top:50%;
+	margin-top:-270px;
+	box-shadow:5px 5px 5px rgba(0,0,0,0.2);
+	border-radius:15px;
+}
+.left-text {
+	font-weight:bold;
+	line-height:35px;
+}
+.left-text2{
+	font-weight:bold;
+	line-height: 35px;
+}
+a{
+	color:#FFFFFF;text-decoration: none;
+}
+

@@ -1,12 +1,38 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8" />
-    <title></title>
-</head>
-<body>
-Thymeleaf模板引擎
-<h1 th:text="${name}">hello world~~~~~~~</h1>
-<!-- 非常适合动静分离    没内容的时候不会加载的呦  -->
+	<head>
+		<meta charset="UTF-8">
+		<title>首页--欢迎</title>
+		<link rel="stylesheet" type="text/css" th:href="@{/static/css/index.css}">
+	</head>
+	<body>
+<div class="cs">
+	<br>
+			<div class="logo">
+				<img th:src="@{/static/images/heard.jpg}">
+			</div>
+	<h1>首页--欢迎</h1>
+    <br>
+    <h4>我可以拯救整个世界，但是只有你可以拯救我。</h4>
+    <br>
+	<h3>好看的皮囊千篇一律  有趣的灵魂万里挑一</h3>
+	<br>
+
+    <a href="" target="_Blank"><button class="dd-1">页签1</button></a>
+	<a href="" target="_Blank"><button class="dd-2">页签2</button></a>
+	<a href="" target="_Blank"><button class="dd-3">页签3</button></a>
+	<div id="nav">
+		<h1 class="left-text">公告</h1>
+		<hr width="80%" color="#A3F7BF">
+		<h2 class="left-text2">点击此处与我联系↓<br /><a href="">点击我</a></h2>
+	</div>
+		
+		
+</div>
+<!-- 
+	 <audio autoplay loop>
+		<source src="merimeri.mp3" type="audio/mpeg">
+	 </audio>
+ -->
 </body>
 </html>
