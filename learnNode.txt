@@ -87,3 +87,39 @@ restart.include.pagehelper=/pagehelper-[\\w-\\.]+jar
 generatorConfig.xml放在pom.xml同级文件夹配置分页插件和数据源 包和类
 GeneratorDisplay.java逆向工程的启动类 即可生成对应的文件
 
+
+##################################################################################
+7.整合redis
+加入jar包 pom文件
+在配置文件配置
+注意最后的超时时间为5000毫秒即可
+复杂的放入json字符串用到了  JsonUtils 他可以把 user转换为json 放入redis  在拿出来转换为user
+RedisOperator redis 的操作类 相当于 jedis 这个jar包  
+@Component   //注入 让spring扫描组件
+
+
+
+##################################################################################
+8.整合定时任务task 
+先在启动类中加入@EnableScheduling//打开定时任务  打开即可扫描
+创建task类 @Component //定义组件 加入组件注解
+@Scheduled(fixedRate=3000)在方法体上加入注解 括号内为 运行区间
+
+
+##################################################################################
+9.异步调用的方法
+首先在启动类中添加 注解 @EnableAsync //启用异步调用
+在需要异步调用的方法中上加入@Async//开启异步调用方法
+
+##################################################################################
+10.拦截器的使用
+在配置类中添加@Configuration //表明当前是一个适配器 
+改类要继承extends WebMvcConfigurerAdapter  并且重写addInterceptors方法
+在该方法体中定义 拦截的url
+registry.addInterceptor(new TwoInterceptor()).addPathPatterns("/one/**").addPathPatterns("/tow/**"); //拦截
+拦截器的实现 实现 HandlerInterceptor接口  重新不同时候调用的方法
+OneInterceptor implements HandlerInterceptor 
+注入上面的addPathPatterns registry
+
+
+
