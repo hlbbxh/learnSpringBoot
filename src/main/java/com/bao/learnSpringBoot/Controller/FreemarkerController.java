@@ -78,7 +78,11 @@ public class FreemarkerController {
 		//直接输出true  false  会报错的呦
 		return "freemarker/yufa";
 	}
-	
+	/**
+	 * 函数 指令
+	 * @param md
+	 * @return
+	 */
 	@RequestMapping("/func")
 	public String functionandCmd(ModelMap md) {
 		md.addAttribute("short_int",new ShortMethod());
