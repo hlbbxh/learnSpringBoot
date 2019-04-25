@@ -552,4 +552,34 @@ idea授权代码
 			    }
 			}
 
+2.SpringBoot对于数据库事物的操作 只需要在 方法上加上 @Transactional 注解即可  注意是springboot 包下面的
+/**
+ * 发红包 事物部分  要么都成功  要么都失败
+ */
+@Service
+public class LuckMoneyService {
+
+    @Autowired
+    private LuckMoneyRepository luckMoneyRepository;
+
+    @Transactional
+    public void createTwo(){
+        Luckmoney luckmoney1 = new Luckmoney();
+        luckmoney1.setSendRen("aaa");
+        luckmoney1.setMoney(new BigDecimal("520"));
+        luckMoneyRepository.save(luckmoney1);
+
+        Luckmoney luckmoney2 = new Luckmoney();
+        luckmoney2.setSendRen("aaa");
+        luckmoney2.setMoney(new BigDecimal("1314"));
+        luckMoneyRepository.save(luckmoney2);
+
+
+    }
+}
+mysql 默认的MyISAM 不支持事物   要改成 InnoDB 才可以 
+
+
+
+
 
