@@ -580,6 +580,97 @@ public class LuckMoneyService {
 mysql 默认的MyISAM 不支持事物   要改成 InnoDB 才可以 
 
 
+3.web进阶之springboot验证 
+	首先需要把映射的参数换成对象的形式
+    @RequestMapping("/validentity")  // 在方法的实体参数前面 加 @Valid   错误信息 会返回在 BindingResult
+    public Luckmoney saveMoneyEntity(@Valid Luckmoney luckmoney, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){ //判断是否有错误
+            System.out.println(bindingResult.getFieldError().getDefaultMessage());//获取错误日志
+            return null;
+        }
+   
+    @Min(value = 10,message = "红包最少发10块") //验证最少为10
+    private BigDecimal money;
 
+4.aop切面的运用
 
+	首先导入jar包
+		<!-- spring boot Aop -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+	
+	创建切面类 HttpAspect 在类上添加注解  @Aspect  @Component
+		@Aspect //切面
+		@Component //组件注入
+		public class HttpAspect {
+		
+	传统的方式
+	    /**
+	     * 在切入的方法体之前进行拦截
+	     * LuckMoneyController . * 代表改该方法的所有方法
+	     * (..)代表所有参数都拦截
+	     *
+	     */
+	    @Before("execution(public * com.hlbbxh.luckmoney.controller.LuckMoneyController.*(..))")
+	    public void log(){
+	        System.out.printf("在方法进入之前拦截了...");
+	    }
+	
+	    @After("execution(public * com.hlbbxh.luckmoney.controller.LuckMoneyController.*(..))")
+	    public void after(){
+	        System.out.printf("在方法之后进行拦截了...");
+	    }
+	    
+	 使用切点的方式  在方法上 定义切点   @Pointcut
+	    @Pointcut("execution(public * com.hlbbxh.luckmoney.controller.LuckMoneyController.*(..))")
+	    public void log(){
+	        logger.info("这是log方法体，不会执行...");
+	    }
+		定义切点  就可以 直接写方法了
+	    @Before("log()")
+	    public void before(JoinPoint joinpoint){ //Joinpoint获取方法和参数的  注意上lang包下的
+	        logger.info("这是在方法之前进行拦截....");
+	    }
+	
+	    @After("log()")
+	    public void after(){
+	        logger.info("在方法之后进行拦截了...");
+	    }
+	    
+	 logger的使用
+	    //log4g 日志
+	    private final static Logger logger = LoggerFactory.getLogger(HttpAspect.class);
+	    //记录日志  在方法进入之前
+	    @Before("log()")
+	    public void before(JoinPoint joinpoint){ //Joinpoint获取方法和参数的  注意上lang包下的
+	        logger.info("这是在方法之前进行拦截....");
+	        //记录一些日志信息
+	        // RequestContextHolder . getRequestAttributes = ServletRequestAttributes 强制转换
+	        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+	        HttpServletRequest request = attributes.getRequest();//得到request
+	        //url 地址
+	        logger.info("url={}",request.getRequestURI());
+	        //method 方法
+	        logger.info("method={}",request.getMethod());
+	        //ip 地址
+	        logger.info("ip={}",request.getRemoteAddr());
+	        //类方法   joinpoint.getSignature().getDeclaringTypeName() 类名
+	        //  joinpoint.getSignature().getName()  方法名
+	        logger.info("class_method={}",joinpoint.getSignature().getDeclaringTypeName()+"."+joinpoint.getSignature().getName());
+	        //参数
+	        logger.info("args={}",joinpoint.getArgs());
+	    }
 
+	    在方法执行完毕后 获取方法的返回值
+	    /**
+	     * 在方法之后 获取返回的对象
+	     * 使用  @AfterReturning 注解
+	     * 重写tosring 方法  打印 
+	     * @param object
+	     */
+	    @AfterReturning(returning = "object",pointcut = "log()")
+	    public void afterres(Object object){
+	        logger.info("resullt={}",object.toString());
+	    }
