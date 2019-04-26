@@ -674,3 +674,77 @@ mysql 默认的MyISAM 不支持事物   要改成 InnoDB 才可以
 	    public void afterres(Object object){
 	        logger.info("resullt={}",object.toString());
 	    }
+	    
+	    
+	    
+==========================================================================2019-04-26
+1.全局异常的处理
+	统一页面最终返回的json数据类型（类型代码，信息，数据）
+		/**
+		 * 统一返回的信息
+		 */
+		public class ReturnResult<T> {
+		    //类型码
+		    private Integer errcode;
+		    //信息
+		    private String msg;
+		    //具体的数据  泛型 上面的尖括号内
+		    private T date;
+		    //get set 方法
+	
+	
+	在controller中调用，不同的处理结果返回不同的状态代码和信息
+	    @RequestMapping("/validentity")  // 在方法的实体参数前面 加 @Valid   错误信息 会返回在 BindingResult
+	    public ReturnResult saveMoneyEntity(@Valid Luckmoney luckmoney, BindingResult bindingResult){
+	        if(bindingResult.hasErrors()){ //判断是否有错误
+	            ReturnResult returnResult = new ReturnResult(); // 错误的时候
+	            returnResult.setErrcode(500);
+	            returnResult.setMsg(bindingResult.getFieldError().getDefaultMessage());
+	            return returnResult;
+	        }
+	        ReturnResult returnResult = new ReturnResult();
+	        returnResult.setErrcode(200);  //正确的时候
+	        returnResult.setMsg("success");
+	        returnResult.setDate(luckMoneyRepository.save(luckmoney));
+	        return returnResult;
+	    }
+	    
+	    
+	持续优化，代码写出重复了 定义获取成功失败的工具类
+		    /**
+		     * 成功的方法
+		     * @param object
+		     * @return
+		     */
+		    public static ReturnResult success(Object object){
+		        ReturnResult returnResult = new ReturnResult();
+		        returnResult.setErrcode(200);
+		        returnResult.setMsg("success");
+		        returnResult.setDate(object);
+		        return returnResult;
+		    }
+		
+		    /**
+		     * 失败的方法
+		     * @param errercode
+		     * @param msg
+		     * @return
+		     */
+		    public static ReturnResult fild(Integer errercode,String msg){
+		        ReturnResult returnResult = new ReturnResult();
+		        returnResult.setErrcode(errercode);
+		        returnResult.setMsg(msg);
+		        returnResult.setDate(null);
+		        return returnResult;
+		    }
+	直接在controller中    就可以了
+	        if(bindingResult.hasErrors()){ //判断是否有错误
+	           return ResultUtil.fild(500,bindingResult.getFieldError().getDefaultMessage());
+	        }
+	        return ResultUtil.success(luckMoneyRepository.save(luckmoney));
+	    }
+	    
+	    
+2.全局异常的处理和异常的捕获
+	    
+	 
