@@ -39,6 +39,7 @@ public class FileUplode {
                 String fileName = file.getOriginalFilename();
                 
                 //文件保存路径
+                // File.separator 根据系统判断文件的斜杠
                 String destFileName="G:\\Learning_software\\EclipseWebWork\\hlbbxhWork\\mblog\\learnSpringBoot\\src\\main\\resources\\static\\temp\\uploaded"+File.separator+fileName;
                  
                 //生成文件
