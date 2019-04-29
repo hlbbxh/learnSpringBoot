@@ -2,6 +2,7 @@ package com.bao.learnSpringBoot.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +36,13 @@ public class LuckmoneyController {
 		luckMoneyService.createTwo();
 	}
 	
-	
-	
-	
+	/**
+	 *测试异常处理机制  
+	 *定义自己的异常
+	 */
+	@GetMapping("/testexp/{id}")
+	public Luckmoney testexpection(@PathVariable Integer id){
+		Luckmoney luckmoney = luckMoneyService.findById(id);
+		return luckmoney;
+	}
 }
