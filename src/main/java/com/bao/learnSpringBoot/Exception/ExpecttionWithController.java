@@ -4,10 +4,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.bao.learnSpringBoot.Util.JsonResult;
+import com.bao.learnSpringBoot.Util.Return.ReturnResult;
+import com.bao.learnSpringBoot.Util.Return.ReturnResultUtils;
 
 @ControllerAdvice //首先是这个注解
 public class ExpecttionWithController {
@@ -32,7 +35,7 @@ public class ExpecttionWithController {
 	 */
 	@ExceptionHandler(value = Exception.class)//异常
 	public Object defaultErrorHandler(HttpServletRequest request,Exception e)throws Exception{
-	  //e.printStackTrace();  这串代码打印的是长长的公色错误信息  传统的错误信息
+	  //e.printStackTrace();  这串代码打印的是长长的公色错误信息  传统的错误信息  
 	  if (isAjax(request)) {
 		  return JsonResult.errorException(e.getMessage()); //ajax 异常返回
 	  }else {
@@ -57,4 +60,15 @@ public class ExpecttionWithController {
 						.equals( httpRequest.getHeader("X-Requested-With").toString()) );
 	}
 
+	
+    /**
+     * 捕获后的处理方法 我们希望 返回的  还是  ReturnResult 三个类型
+     * MyselfExpception
+     * @return
+     */
+    @ExceptionHandler(value = MyselfExpception.class) //要捕获的异常 类名 .class
+    @ResponseBody //要返回给前台一个 json字符串  所以 需要这个注解
+    public ReturnResult expHandle(Exception e){
+        return ReturnResultUtils.fild(500,e.getMessage());
+    }
 }
