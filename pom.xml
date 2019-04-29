@@ -37,6 +37,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<!-- 热部署 -->
@@ -53,7 +59,7 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<!-- optional=true, 依赖不会传递, 该项目依赖devtools; 
 				之后依赖boot项目的项目如果想要使用devtools, 需要重新引入 -->
-			<optional>true</optional>
+			<optional>false</optional>
 		</dependency>
 
 		<!-- 要想读取资源配置文件必须要这个jar包 -->
@@ -102,6 +108,12 @@
 		    <groupId>tk.mybatis</groupId>
 		    <artifactId>mapper-spring-boot-starter</artifactId>
 		    <version>1.2.4</version>
+			<exclusions><!-- 加入spring date jpa  需要排除多余的依赖  在mybatis中 -->
+				<exclusion>
+					<groupId>javax.persistence</groupId>
+					<artifactId>persistence-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!--pagehelper-->
 		<dependency>
@@ -129,6 +141,28 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+
+        
+        
+        <!-- 引入spring boot - date- jpa -->
+        <!-- 注意  注意  注意                  如果引入了      mapper-spring-boot-starter    需要排除多余的依赖        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <!-- 
+			发现原来是我在pom.xml文件中配置了tk.mybatis造成的（我先是搭建了springboot+mybatis+maven的项目，后来在此基础上进行修改，故pom.xml
+			文件中的依赖没有删除掉），因为tk.mybatis会自动引用依赖引入persistence-api-1.0.jar包，
+			而persistence-api-1.0.jar的PersistenceUnitInfo类中并没有getValidationMode()方法，而在springboot
+			（2.1.0.RELEASE）中自动引入的依赖persistence-api-2.2.jar包的PersistenceUnitInfo类则有实现getValidationMode()方法。
+			此时两个类冲突了，导致报了以下的错误。解决方法就是在tk.mybatis中排除掉persistence-api-1.0.jar的自动依赖
+         -->
+		
+		<!-- spring boot Aop 加入六切面 -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 		
 	</dependencies>
