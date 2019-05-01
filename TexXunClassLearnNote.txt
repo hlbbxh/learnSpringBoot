@@ -1,0 +1,79 @@
+						###########################################
+						#			腾讯课堂    springBoot 学习笔记                     #
+						###########################################
+注：所有的演示文件都对应在 com.bao.learnSpringBoot.TencentClass 包下面
+
+1.springboot对bean的注入
+
+	首先是小汽车的抽象--》
+	public interface Car {
+		/**
+		 * 描述自己的方法
+		 */
+		public void desc();
+	}
+		
+		
+	小汽车的两个具体实例--》
+	@Component   //让这个类让ioc容器管理  加入 @Component 注解即可
+	public class Bencar implements Car{
+	
+		@Override
+		public void desc() {
+			// TODO Auto-generated method stub
+			System.out.println("我是一个本田车");
+		}
+		
+	}
+	
+	@Component   //让这个类让ioc容器管理  加入 @Component 注解即可
+	public class Baocar implements Car{
+	
+		@Override
+		public void desc() {
+			// TODO Auto-generated method stub
+			System.out.println("我是宝马车");
+		}
+		
+	之后是两个配置类--》
+	@Configuration //代表配置类
+	public class JavaConfigBen {
+		
+		@Bean("ben") //代表交给ioc管理  容器可以有多个   ben 为bean的名字 不写 默认方法名
+		public Car getBen() {
+			return new Bencar();
+		}
+	}
+	
+	@Configuration
+	public class JavaCongfiBao {
+		
+		@Bean  //获取宝马  又是一个容器  但是 ioc 就 只有一个 
+		public Car getBao() {
+			return new Baocar();
+		}
+	}
+	
+	只能有一个ioc容器 要创建配置类的父类--》
+	/**
+	 * @author Gelil
+	 * 代表上层容器
+	 */
+	@Configuration  //也需要  @Configuration 
+	@Import({JavaCongfiBao.class,JavaConfigBen.class}) //导入两个自子容器  
+		public class ParentConfig {
+			
+	}
+	
+	
+	最后测试获取javabenan--》
+	public class ContestLoderTest {
+		public static void main(String[] args) {
+			//创建  AnnotationConfigApplicationContext 对象   并且指定 父对象 
+			AnnotationConfigApplicationContext context =new AnnotationConfigApplicationContext(ParentConfig.class);
+			Car bencar = (Car) context.getBean("ben"); //使用bean 注解  的value 获取
+			bencar.desc();
+			Car baocar = (Car) context.getBean("getBao"); //默认使用方法名小写 即可 也是可以获取
+			baocar.desc();
+		}
+	}
