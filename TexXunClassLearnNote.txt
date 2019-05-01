@@ -77,3 +77,67 @@
 			baocar.desc();
 		}
 	}
+	
+2.配置文件中yml语法的java map  list 对应的写法
+	person: 
+	  lname: 帝
+	  #map 的语法 key 冒号后要有空格 
+	  maps: {key1: val1, key2: val2}
+	  # list 语法
+	  list: [dag,pag,tiger]
+	  #如果里面还有对象 直接在下面层级写即可
+	  dag: 
+	  	name: 旺财
+	  	age: 3
+
+	在properties文件中 
+	list的写法：person.list=dog,pag,tiger
+	map的写法：   person.map.key1=val1
+	         person.map.key2=val2
+	属性的类写法：person.dag.name=旺财
+	
+		<!-- springboot ymal 配置文件处理器  导入 就可以有提示了 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+	注意：这里面的配置文件 可以随便 取值 可以不按照顺序 直接使用 ${person.lname} 即可  
+		${person.lname}_dag 直接拼接 也是可以的
+		还可以随机数 ${randomo.int} 即可   
+		在单个取值的使用 用@Value 的时候  可以 使用"#3*12"的计算的
+		使用对象注入的时候 可以可以加入校验 @Validated   @Email 代表验证邮箱
+
+3.加载其他的配置文件    @PropertySource(value="classpath:resource.properties")//资源文件地址
+	com.learn.name=hlb
+	com.learn.web=www.hlbbxh.com
+	com.learn.language=java
+	
+	@Configuration //代表引用资源文件的代表是配置
+	@ConfigurationProperties(prefix="com.learn") //资源文件的前缀
+	@PropertySource(value="classpath:resource.properties")//资源文件地址
+	public class Resource {
+		private String name;
+		private String web;
+		private String language;
+		
+	@PropertySource 里面是一个数组 可以加载多个配置文件
+	
+	使用bean.xml加载person对象 
+	xml中  <bean id="person" class="com.bao.learnspringboot.entity.person"></bean>
+	
+	在启动类上方加入
+	@ImportResource(locations = {"classpath:beans.xml"})
+	
+	在测试方法中直接使用 @Autowired 自动注入 ApplicationContext .getBean("person");就可以获得还对象的实例
+	
+4.多配置文件的时候 直接 使用 spring.profiles.active=dev就可以了
+	ymal支持多文档块的支持  直接使用 --- 三个横线就可以了
+	
+
+5.源码分析
+	spring-boot-1.3.0.RELEASE.jar 
+	/META-INF/spring.factories 包下面有许多启动器
+	配置为文件 debug=true 开启启动详细信息
+
