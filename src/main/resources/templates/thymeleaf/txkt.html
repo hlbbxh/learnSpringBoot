@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8" />
+    <title></title>
+<title>thymeleaf语法复习</title>
+</head>
+<body>
+<!-- ==============================   thymeleaf语法复习        =================================== -->
+<center>thymeleaf语法复习 witt tencent class</center>
+	<span th:text="${session.user.name}"></span><br/>
+	<span th:text="${session.user.age}"></span><br/>
+	<span th:text="${session.user.desc}"></span><br/>
+	<!-- 在session取值的时候要加入作用域  session . 才可以  不然不知道 -->
+<p>=========================================================</p>
+
+<!-- 使用 * 获取 -->
+<div th:object="${session.user}">
+	<span th:text="*{name}"></span><br/>
+	<span th:text="*{age}"></span><br/>
+	<span th:text="*{desc}"></span><br/>
+</div>
+
+<p>========================a标签的连接跳转=================================</p>
+<a th:href="@{txkt(username=root,pwd=123456,age=${session.user.age})}">点击跳转</a>
+ <!--         请求地址                  参数                     参数                                          传值参数                                                       -->    
+ <!-- 支持三目运算符 -->
+ 
+</body>
+</html>
+
