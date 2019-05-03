@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -82,4 +84,20 @@ public class ThymeleafController {
 		//转发过来的会自动封装属性到作用域中
 		return "thymeleaf/submitScuess";
 	}
+	
+	/**
+	 * 语法复习的案例
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("txkt")
+	public String txkt(HttpSession session) {
+			User user = new User();
+			user.setName("腾讯课堂");
+			user.setAge(18);
+			user.setDesc("desc");
+			session.setAttribute("user", user);
+		return "thymeleaf/txkt";
+	}
+	
 }
