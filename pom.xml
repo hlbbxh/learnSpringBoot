@@ -180,6 +180,14 @@
 		</dependency>
 		<!-- 在这个路径可以查看  http://localhost:8088/hlbbxh/webjars/jquery/3.4.0/jquery.js -->
 		
+		
+		<!-- 阿里的消息转发器  fastjson -->
+		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>fastjson</artifactId>
+		    <version>1.2.54</version>
+		</dependency>
+		
 	</dependencies>
 
 	<!-- 这是maven打包插件 -->
