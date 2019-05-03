@@ -140,4 +140,142 @@
 	spring-boot-1.3.0.RELEASE.jar 
 	/META-INF/spring.factories 包下面有许多启动器
 	配置为文件 debug=true 开启启动详细信息
+	
+6.webjars 导入qjuery  https://www.webjars.org/
+	在maven中添加依赖
+		<!-- webJars 导入的 jquery  -->
+		<dependency>
+		    <groupId>org.webjars</groupId>
+		    <artifactId>jquery</artifactId>
+		    <version>3.4.0</version>
+		</dependency>
+		<!-- 在这个路径可以查看  http://localhost:8088/hlbbxh/webjars/jquery/3.4.0/jquery.js -->
+	下载的jar包内容可以查看
+	G:\Learning_software\maven\mavenRep\org\webjars\jquery\3.4.0\jquery-3.4.0.jar
+
+5.thymeleaf语法复习
+	多取值可以使用 + 来拼接  支持ognl表达式
+		用户姓名：<input th:value="${user.name + user.age}"/>
+	日期转换的两种方式：
+		用户生日：<input th:value="${#dates.format(user.birthday, 'yyyy-MM-dd')}"/>
+		<!-- thymeleaf 的日期转换格式                                            参数                                                       格式                 -->
+		<br/>
+		用户生日：<input th:value="${#calendars.format(user.birthday, 'yyyy-MM-dd')}"/>
+	在list中也是可以使用.size获取长度
+	
+	spring.mvc.date-format=yyyy-MM-dd 也是可以在配置文件中指定时间格式
+	
+	注意 默认的访问主页是在：/learnSpringBoot/src/main/resources/static/index.html下
+
+6.当我们的thymelaf中的模板是一个静态的页面的时候，要想访问的话需要添加一个空的控制器来进行跳转，这样就很麻烦，所以我们要加入自己的解析配置了类
+	首先是我需要跳转的空的thymeleaf模板页面
+	<!DOCTYPE html>
+	<html>
+	<head lang="en">
+	    <meta charset="UTF-8" />
+	    <title></title>
+	<title>我是一个空的thymeleaf页面</title>
+	</head>
+	<body>
+		<center>
+			我是一个空的thymeleaf的模板  可以 直接 在  url 路径中 使用 /kong 进行访问 但是前提是要 在 MvcConfig中配置
+		</center>
+	</body>
+	</html>
+	之后就是创建配置类
+	/**
+	 * 当我们的thymelaf中的模板是一个静态的页面的时候，
+	 * 要想访问的话需要添加一个空的控制器来进行跳转，
+	 * 这样就很麻烦，所以我们要加入自己的解析配置了类
+	 * @author Gelil
+	 *
+	 */
+	@Configuration
+	public class MvcConfig implements WebMvcConfigurer{
+		
+		/**
+		 * 重写这个方法  加入空的  thymeleaf 的空的  模板
+		 */
+		@Override
+		public void addViewControllers(ViewControllerRegistry registry) {
+			// TODO Auto-generated method stub
+			registry.addViewController("/kong").setViewName("thymeleaf/kong");
+			//                          url                  资源地址 
+		}
+		
+		/**
+		 * 添加时间格式化器  不如直接使用
+		 * spring.mvc.date-format=yyyy-MM-dd 也是可以在配置文件中指定时间格式
+		 */
+		@Override
+		public void addFormatters(FormatterRegistry registry) {
+		}
+	}
+	
+	之后 直接 在url中输入/kong  即可返回  thymeleaf 页面  kong.html
+
+	
+7.使用阿里的fastjson消息转发器
+	导入jar
+		<!-- 阿里的消息转发器  fastjson -->
+		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>fastjson</artifactId>
+		    <version>1.2.54</version>
+		</dependency>
+		
+	还是MvcConfig  configureMessageConverters 重写
+	/**
+	 * 消息转发器  就是格式化了一下时间日期  使用的阿里的 fastjson 
+	 * 感觉并没有什么用  springboot 不知自带
+	 */
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		FastJsonHttpMessageConverter fc = new FastJsonHttpMessageConverter();
+		FastJsonConfig config = new FastJsonConfig();
+		config.setSerializerFeatures(SerializerFeature.PrettyFormat);
+		fc.setFastJsonConfig(config);
+		converters.add(fc);
+		/*	使用  在实体类上  
+		 * 	@JSONField(format="yyyy-MM-dd")
+			private Date birthday;
+		 * */
+	}
+
+8.拦截器的配置
+	先创创建拦截器的类 里面有许多方法  之前  之后  结果等 这里就写了之前  OneInterceptor.java
+	public class OneInterceptor implements HandlerInterceptor  {
+	
+		/**
+		 * 在请求处理之前进行调用（Controller方法调用之前）
+		 */
+		@Override
+		public boolean preHandle(HttpServletRequest request, HttpServletResponse response, 
+				Object object) throws Exception {
+			
+			System.out.println("被one拦截，放行...");
+			return true;
+			
+			/*if (true) {
+				returnErrorResponse(response, JsonResult.errorMsg("被one拦截..."));
+			}
+			
+			return false;*/
+		}
+	还是上面的MvcConfig  添加拦截器
+	/**
+	 * 这是拦截器的配置  
+	 * 同样都是这个方法 addInterceptors
+	 */
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		// TODO Auto-generated method stub
+		registry.addInterceptor(new OneInterceptor()).
+								addPathPatterns("/one/**").
+								excludePathPatterns("/one/index");
+	}
+
+
+
+	
 
