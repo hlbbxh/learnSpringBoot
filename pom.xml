@@ -188,6 +188,12 @@
 		    <version>1.2.54</version>
 		</dependency>
 		
+		<!-- rabbitmq 的依赖 -->
+		<dependency>
+			 <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+		
 	</dependencies>
 
 	<!-- 这是maven打包插件 -->
