@@ -23,11 +23,10 @@ public class LearnSpringBootApplTests {
 	@Test
 	public void testrabbitmq() throws Exception {
 		Order order = new Order();
-		order.setId(1);
+		order.setId(2019004);
 		order.setName("哇哈哈");
 		order.setMessageid(00001);
 		ordersender.send(order);
 		System.out.println("消息发送完毕");
 	}
-
 }
